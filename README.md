@@ -51,29 +51,6 @@ The main endpoint is `/api/lingo` with these parameters:
 
 ![Duo Theme](https://lingo-readme-stats.vercel.app/api/lingo?username=livrasand&theme=duo)
 
-## Deployment
-
-### Vercel
-
-1. Create a GitHub repo with these files.
-2. Connect to [Vercel](https://vercel.com/new).
-3. Vercel auto-detects `vercel.json` and builds TypeScript functions.
-4. Test: `https://your-project.vercel.app/api/lingo?username=your_duolingo_username`
-
-### Docker
-
-Build image:
-```bash
-docker build -t lingo-readme-stats .
-```
-
-Run container:
-```bash
-docker run -p 3000:3000 lingo-readme-stats
-```
-
-Access API at: `http://localhost:3000/api/lingo?username=your_username`
-
 ## Copyright
 
 This project is not affiliated with, endorsed by, or approved by Duolingo, Inc. Duolingo is a registered trademark of Duolingo, Inc. All rights reserved to their respective owners. Use at your own risk and comply with Duolingo's terms.
