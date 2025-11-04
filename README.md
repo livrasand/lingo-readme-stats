@@ -1,127 +1,83 @@
 # Lingo Readme Stats
 
-Un generador de tarjetas SVG dinámicas para mostrar estadísticas públicas de Duolingo en tu README de GitHub.
+A dynamic SVG card generator to display public Duolingo stats in your GitHub README.
 
-## Descripción
+## Description
 
-Este proyecto permite crear imágenes SVG personalizables que muestran estadísticas públicas de perfiles de Duolingo, como experiencia (XP), racha actual, idiomas aprendidos, etc. Es ideal para incluir en perfiles de GitHub o repositorios para compartir tu progreso en el aprendizaje de idiomas.
+This project creates customizable SVG images showing public Duolingo profile stats like XP, current streak, learned languages, etc. Perfect for GitHub profiles or repos to share language learning progress.
 
-El proyecto está desarrollado en TypeScript y utiliza la API pública no oficial de Duolingo para obtener metadatos públicos de usuarios. No requiere autenticación y es completamente gratuito.
+Built in TypeScript using Duolingo's unofficial public API. No authentication required, completely free.
 
-## Características
+## Features
 
-- **Generación dinámica de SVG**: Crea tarjetas visuales atractivas.
-- **Temas personalizables**: Elige entre temas prediseñados.
-- **Campos ocultables**: Oculta información que no quieras mostrar.
-- **Cache configurable**: Controla el tiempo de caché para optimizar rendimiento.
-- **Despliegue fácil**: Compatible con Vercel y Docker.
+- Dynamic SVG generation
+- Customizable themes
+- Hideable fields
+- Configurable caching
+- Easy deployment on Vercel or Docker
 
-## Instalación
+## Usage
 
-1. Clona este repositorio:
-   ```bash
-   git clone https://github.com/livrasand/lingo-readme-stats.git
-   cd lingo-readme-stats
-   ```
+The main endpoint is `/api/lingo` with these parameters:
 
-2. Instala las dependencias:
-   ```bash
-   npm install
-   ```
+- `username` (required): Duolingo username
+- `theme` (optional): Card theme (`default`, `light`, `duo`). Default: `default`
+- `hide` (optional): Fields to hide, comma-separated (e.g., `xp,streak,language`)
+- `cache_seconds` (optional): Cache-Control header seconds. Default: 1800
 
-3. (Opcional) Compila el código TypeScript:
-   ```bash
-   npm run build
-   ```
+## Examples
 
-## Uso
-
-### Despliegue Local
-
-Ejecuta el servidor localmente:
-```bash
-npm start
-```
-
-O usa Vercel CLI para desarrollo:
-```bash
-npx vercel dev
-```
-
-### Endpoint de la API
-
-El endpoint principal es `/api/lingo` con los siguientes parámetros:
-
-- `username` (requerido): Nombre de usuario de Duolingo.
-- `theme` (opcional): Tema de la tarjeta (`default`, `light`, `duo`). Por defecto: `default`.
-- `hide` (opcional): Campos a ocultar, separados por coma (ej: `xp,streak,language`).
-- `cache_seconds` (opcional): Segundos para el header Cache-Control. Por defecto: 1800.
-
-### Variables de Entorno
-
-- `CACHE_SECONDS`: Valor por defecto de caché en segundos si no se pasa por query.
-
-## Ejemplos
-
-### Ejemplo Básico
+### Default Theme
 
 ```markdown
-![Mis Stats de Duolingo](https://tu-dominio.vercel.app/api/lingo?username=tu_usuario)
+![Duolingo Stats](https://lingo-readme-stats.vercel.app/api/lingo?username=your_username)
 ```
 
-### Con Tema y Campos Ocultos
+![Default Theme](https://lingo-readme-stats.vercel.app/api/lingo?username=juanito&theme=default)
+
+### Light Theme
 
 ```markdown
-![Stats Personalizados](https://tu-dominio.vercel.app/api/lingo?username=tu_usuario&theme=duo&hide=streak&cache_seconds=86400)
+![Duolingo Stats](https://lingo-readme-stats.vercel.app/api/lingo?username=your_username&theme=light)
 ```
 
-### Imagen Generada
+![Light Theme](https://lingo-readme-stats.vercel.app/api/lingo?username=juanito&theme=light)
 
-![Ejemplo de Tarjeta](https://tu-dominio.vercel.app/api/lingo?username=juanito&theme=duo)
+### Duo Theme
 
-## Despliegue
+```markdown
+![Duolingo Stats](https://lingo-readme-stats.vercel.app/api/lingo?username=your_username&theme=duo)
+```
 
-### En Vercel
+![Duo Theme](https://lingo-readme-stats.vercel.app/api/lingo?username=juanito&theme=duo)
 
-1. Crea un repositorio en GitHub con estos archivos.
-2. Conecta el repositorio en [Vercel](https://vercel.com/new).
-3. Vercel detectará automáticamente el `vercel.json` y compilará las funciones TypeScript.
-4. En la configuración del proyecto, añade `CACHE_SECONDS` si deseas un valor por defecto diferente.
-5. Prueba el endpoint: `https://<tu-proyecto>.vercel.app/api/lingo?username=tu_usuario_duo`
+## Deployment
 
-### Con Docker
+### Vercel
 
-Construye la imagen:
+1. Create a GitHub repo with these files.
+2. Connect to [Vercel](https://vercel.com/new).
+3. Vercel auto-detects `vercel.json` and builds TypeScript functions.
+4. Test: `https://your-project.vercel.app/api/lingo?username=your_duolingo_username`
+
+### Docker
+
+Build image:
 ```bash
 docker build -t lingo-readme-stats .
 ```
 
-Ejecuta el contenedor:
+Run container:
 ```bash
 docker run -p 3000:3000 lingo-readme-stats
 ```
 
-Accede a la API en: `http://localhost:3000/api/lingo?username=tu_usuario`
-
-## Pruebas
-
-Para pruebas locales precisas, instala Vercel CLI y ejecuta:
-```bash
-npx vercel dev
-```
-
-Esto emulará los endpoints serverless localmente.
-
-También puedes compilar y ejecutar manualmente:
-```bash
-npm run build
-node dist/api/lingo.js
-```
+Access API at: `http://localhost:3000/api/lingo?username=your_username`
 
 ## Copyright
 
-Este proyecto no está afiliado, respaldado ni aprobado por Duolingo, Inc. Duolingo es una marca registrada de Duolingo, Inc. Todos los derechos reservados a sus respectivos propietarios. El uso de este proyecto es bajo tu propia responsabilidad y debe cumplir con las políticas de uso de Duolingo.
+This project is not affiliated with, endorsed by, or approved by Duolingo, Inc. Duolingo is a registered trademark of Duolingo, Inc. All rights reserved to their respective owners. Use at your own risk and comply with Duolingo's terms.
 
 ---
 
-Desarrollado por [Livrädo Sandoval](https://github.com/livrasand).
+Developed by [Livrädo Sandoval](https://github.com/livrasand).
