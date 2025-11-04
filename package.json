@@ -1,0 +1,33 @@
+{
+  "name": "lingo-readme-stats",
+  "version": "0.1.0",
+  "description": "Generate dynamic GitHub README cards with Duolingo profile stats (TypeScript + Vercel).",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node ./dist/api/lingo.js",
+    "dev": "tsc --watch",
+    "local": "node server.js"
+  },
+  "keywords": [
+    "duolingo",
+    "readme",
+    "stats",
+    "svg",
+    "vercel",
+    "typescript"
+  ],
+  "author": "Livrädo Sandoval",
+  "license": "",
+  "dependencies": {
+    "duolingo-api": "^1.0.2",
+    "node-fetch": "^2.6.7",
+    "vercel": "^48.8.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.5.0",
+    "@types/node-fetch": "^2.6.13",
+    "express": "^4.18.2",
+    "typescript": "^5.5.2"
+  }
+}
