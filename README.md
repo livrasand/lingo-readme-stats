@@ -33,7 +33,7 @@ The main endpoint is `/api/lingo` with these parameters:
 ![Duolingo Stats](https://lingo-readme-stats.vercel.app/api/lingo?username=your_username)
 ```
 
-![Default Theme](https://lingo-readme-stats.vercel.app/api/lingo?username=livrasand&theme=default)
+![Default Theme](https://lingo-readme-stats.vercel.app/api/lingo?username=christi3&theme=default)
 
 ### Light Theme
 
@@ -41,7 +41,7 @@ The main endpoint is `/api/lingo` with these parameters:
 ![Duolingo Stats](https://lingo-readme-stats.vercel.app/api/lingo?username=your_username&theme=light)
 ```
 
-![Light Theme](https://lingo-readme-stats.vercel.app/api/lingo?username=livrasand&theme=light)
+![Light Theme](https://lingo-readme-stats.vercel.app/api/lingo?username=christi3&theme=light)
 
 ### Duo Theme
 
@@ -49,7 +49,7 @@ The main endpoint is `/api/lingo` with these parameters:
 ![Duolingo Stats](https://lingo-readme-stats.vercel.app/api/lingo?username=your_username&theme=duo)
 ```
 
-![Duo Theme](https://lingo-readme-stats.vercel.app/api/lingo?username=livrasand&theme=duo)
+![Duo Theme](https://lingo-readme-stats.vercel.app/api/lingo?username=christi3&theme=duo)
 
 ## Copyright
 
