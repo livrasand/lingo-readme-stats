@@ -31,7 +31,7 @@ exports.themes = {
         accent: '#3c3c3c',
         border: '#e5e5e5',
         followButton: {
-            background: '#3c3c3c',
+            background: '#1cb0f6',
             text: '#ffffff'
         }
     }
