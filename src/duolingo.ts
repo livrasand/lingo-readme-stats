@@ -151,7 +151,7 @@ export async function fetchDuolingoProfile(username: string): Promise<DuolingoPr
     totalXp: parseInt(raw?.totalXp ?? raw?.total_xp ?? raw?.stats?.totalXp ?? raw?.total_xp ?? 0, 10) || 0,
     learningLanguage: raw?.learningLanguage ?? raw?.learning_language ?? raw?.language,
     picture: picture,
-    streak: raw?.streak ?? raw?.streak_extended ?? raw?.site_streak ?? raw?.streak_count ?? 0,
+    streak: raw?.streakData?.currentStreak?.length ?? raw?.streakData?.currentStreak ?? raw?.streak ?? raw?.streak_extended ?? raw?.site_streak ?? raw?.streak_count ?? 0,
     courses: raw?.courses ?? raw?.language_details ?? [],
     // keep raw object for advanced fields if needed:
     _raw: raw

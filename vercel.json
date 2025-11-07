@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "builds": [
-    { "src": "api/**/*.ts", "use": "@vercel/node" }
-  ],
+  "functions": {
+    "api/lingo.ts": {
+      "runtime": "@vercel/node"
+    }
+  },
   "routes": [
     { "src": "/api/lingo", "dest": "/api/lingo.ts" }
   ]
