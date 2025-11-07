@@ -24,6 +24,7 @@ The main endpoint is `/api/lingo` with these parameters:
 - `theme` (optional): Card theme (`default`, `light`, `duo`). Default: `default`
 - `hide` (optional): Fields to hide, comma-separated (e.g., `xp,streak,language`)
 - `cache_seconds` (optional): Cache-Control header seconds. Default: 1800
+- `format` (optional): Set to `json` to get raw JSON data instead of SVG
 
 ## Examples
 
@@ -50,6 +51,34 @@ The main endpoint is `/api/lingo` with these parameters:
 ```
 
 ![Duo Theme](https://lingo-readme-stats.vercel.app/api/lingo?username=christi3&theme=duo)
+
+### JSON Response
+
+Get raw JSON data by adding `format=json` parameter:
+
+```bash
+curl "https://lingo-readme-stats.vercel.app/api/lingo?username=your_username&format=json"
+```
+
+Example response:
+```json
+{
+  "id": "12345678",
+  "username": "duo_user",
+  "name": "Duo User",
+  "totalXp": 12345,
+  "learningLanguage": "Spanish",
+  "picture": "https://...",
+  "streak": 42,
+  "courses": [
+    {
+      "title": "Spanish",
+      "xp": 10000,
+      "level": 15
+    }
+  ]
+}
+```
 
 ## Copyright
 
