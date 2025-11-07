@@ -16,9 +16,10 @@ async function handler(req, res) {
         }
         // Fetch Duolingo profile (with caching inside)
         const profile = await (0, duolingo_1.fetchDuolingoProfile)(username);
-        // render SVG
-        const svg = (0, svg_1.renderDuolingoCard)(profile, {
+        // render SVG with data URL conversion for avatars
+        const svg = await (0, svg_1.renderDuolingoCard)(profile, {
             theme: theme,
+            convertToDataUrl: true // Enable data URL conversion for avatars
         });
         res.setHeader('Content-Type', 'image/svg+xml; charset=utf-8');
         // Cache-Control: public caching, allow override by query param cache_seconds or env CACHE_SECONDS

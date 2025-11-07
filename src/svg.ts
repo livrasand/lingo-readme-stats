@@ -5,6 +5,7 @@ import { translateXpToLevels } from './duolingo';
 type RenderOptions = {
   theme?: ThemeKey;
   hide?: string[];
+  convertToDataUrl?: boolean;
 };
 
 function escapeXml(unsafe: string) {
@@ -20,7 +21,22 @@ function escapeXml(unsafe: string) {
   });
 }
 
-export function renderDuolingoCard(profile: DuolingoProfile, opts: RenderOptions = {}) {
+async function fetchImageAsDataUrl(url: string): Promise<string | null> {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) return null;
+    
+    const buffer = await response.arrayBuffer();
+    const contentType = response.headers.get('content-type') || 'image/png';
+    const base64 = Buffer.from(buffer).toString('base64');
+    return `data:${contentType};base64,${base64}`;
+  } catch (error) {
+    console.error('Error fetching image:', error);
+    return null;
+  }
+}
+
+export async function renderDuolingoCard(profile: DuolingoProfile, opts: RenderOptions = {}) {
   const selectedTheme = themes[opts.theme || 'default'] || themes.default;
   const hide = new Set((opts.hide || []).map(h => h.toLowerCase()));
 
@@ -43,7 +59,10 @@ export function renderDuolingoCard(profile: DuolingoProfile, opts: RenderOptions
 
   // avatar if exists (Duolingo avatars often reachable via full URL)
   const avatarUrlRaw = profile.picture ? String(profile.picture) : null;
-  const avatarUrl = avatarUrlRaw ? escapeXml(avatarUrlRaw) : null;
+  // Convert to data URL if available
+  const avatarUrl = avatarUrlRaw && opts.convertToDataUrl !== false 
+    ? await fetchImageAsDataUrl(avatarUrlRaw)
+    : avatarUrlRaw ? escapeXml(avatarUrlRaw) : null;
 
   // Construct SVG
   const svg = `<?xml version="1.0" encoding="UTF-8"?>

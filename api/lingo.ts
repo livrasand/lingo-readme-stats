@@ -20,9 +20,10 @@ export default async function handler(req: any, res: any) {
     // Fetch Duolingo profile (with caching inside)
     const profile = await fetchDuolingoProfile(username);
 
-    // render SVG
-    const svg = renderDuolingoCard(profile, {
+    // render SVG with data URL conversion for avatars
+    const svg = await renderDuolingoCard(profile, {
       theme: theme as keyof Themes,
+      convertToDataUrl: true // Enable data URL conversion for avatars
     });
 
     res.setHeader('Content-Type', 'image/svg+xml; charset=utf-8');

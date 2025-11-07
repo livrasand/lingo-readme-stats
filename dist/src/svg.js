@@ -15,7 +15,22 @@ function escapeXml(unsafe) {
         }
     });
 }
-function renderDuolingoCard(profile, opts = {}) {
+async function fetchImageAsDataUrl(url) {
+    try {
+        const response = await fetch(url);
+        if (!response.ok)
+            return null;
+        const buffer = await response.arrayBuffer();
+        const contentType = response.headers.get('content-type') || 'image/png';
+        const base64 = Buffer.from(buffer).toString('base64');
+        return `data:${contentType};base64,${base64}`;
+    }
+    catch (error) {
+        console.error('Error fetching image:', error);
+        return null;
+    }
+}
+async function renderDuolingoCard(profile, opts = {}) {
     const selectedTheme = themes_1.themes[opts.theme || 'default'] || themes_1.themes.default;
     const hide = new Set((opts.hide || []).map(h => h.toLowerCase()));
     const name = escapeXml(profile.name ?? profile.username ?? 'Unknown');
@@ -34,7 +49,10 @@ function renderDuolingoCard(profile, opts = {}) {
     const showStreak = !hide.has('streak');
     // avatar if exists (Duolingo avatars often reachable via full URL)
     const avatarUrlRaw = profile.picture ? String(profile.picture) : null;
-    const avatarUrl = avatarUrlRaw ? escapeXml(avatarUrlRaw) : null;
+    // Convert to data URL if available
+    const avatarUrl = avatarUrlRaw && opts.convertToDataUrl !== false
+        ? await fetchImageAsDataUrl(avatarUrlRaw)
+        : avatarUrlRaw ? escapeXml(avatarUrlRaw) : null;
     // Construct SVG
     const svg = `<?xml version="1.0" encoding="UTF-8"?>
 <svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${name} Duolingo stats">
