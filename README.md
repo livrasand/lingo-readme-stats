@@ -25,6 +25,7 @@ The main endpoint is `/api/lingo` with these parameters:
 - `hide` (optional): Fields to hide, comma-separated (e.g., `xp,streak,language`)
 - `cache_seconds` (optional): Cache-Control header seconds. Default: 1800
 - `format` (optional): Set to `json` to get raw JSON data instead of SVG
+- `follow_btn` (optional): Set to `true` to show a follow button linking to the user's Duolingo profile
 
 ## Examples
 
@@ -52,32 +53,22 @@ The main endpoint is `/api/lingo` with these parameters:
 
 ![Duo Theme](https://lingo-readme-stats.vercel.app/api/lingo?username=christi3&theme=duo)
 
+### With Follow Button
+
+Add a follow button to the card by including `follow_btn=true`:
+
+```markdown
+![Duolingo Stats](https://lingo-readme-stats.vercel.app/api/lingo?username=your_username&follow_btn=true)
+```
+
+![Follow Button Example](https://lingo-readme-stats.vercel.app/api/lingo?username=christi3&follow_btn=true)
+
 ### JSON Response
 
 Get raw JSON data by adding `format=json` parameter:
 
 ```bash
-curl "https://lingo-readme-stats.vercel.app/api/lingo?username=your_username&format=json"
-```
-
-Example response:
-```json
-{
-  "id": "12345678",
-  "username": "duo_user",
-  "name": "Duo User",
-  "totalXp": 12345,
-  "learningLanguage": "Spanish",
-  "picture": "https://...",
-  "streak": 42,
-  "courses": [
-    {
-      "title": "Spanish",
-      "xp": 10000,
-      "level": 15
-    }
-  ]
-}
+https://lingo-readme-stats.vercel.app/api/lingo?username=your_username&format=json
 ```
 
 ## Copyright

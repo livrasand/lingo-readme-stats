@@ -6,6 +6,7 @@ type RenderOptions = {
   theme?: ThemeKey;
   hide?: string[];
   convertToDataUrl?: boolean;
+  followBtn?: boolean;
 };
 
 function escapeXml(unsafe: string) {
@@ -39,6 +40,7 @@ async function fetchImageAsDataUrl(url: string): Promise<string | null> {
 export async function renderDuolingoCard(profile: DuolingoProfile, opts: RenderOptions = {}) {
   const selectedTheme = themes[opts.theme || 'default'] || themes.default;
   const hide = new Set((opts.hide || []).map(h => h.toLowerCase()));
+  const showFollowBtn = opts.followBtn === true;
 
   const name = escapeXml(profile.name ?? profile.username ?? 'Unknown');
   const username = escapeXml(profile.username ?? '');
@@ -84,6 +86,15 @@ export async function renderDuolingoCard(profile: DuolingoProfile, opts: RenderO
   <g class="card">
     <text x="${padding + (avatarUrl ? 64 : 0)}" y="${titleY - 6}" class="title">${name}</text>
     <text x="${padding + (avatarUrl ? 64 : 0)}" y="${titleY + 14}" class="meta">${username}</text>
+    ${showFollowBtn ? `<a href="https://www.duolingo.com/profile/${username}" target="_blank" rel="noopener noreferrer">
+      <rect x="${width - 140}" y="12" width="130" height="36" rx="12" fill="${selectedTheme.followButton?.background || selectedTheme.accent}" />
+      <g transform="translate(${width - 125}, 22)">
+        <path d="M18.3618 11.5624C18.3618 12.3444 18.8448 12.7814 19.4888 12.7814C20.1558 12.7814 20.6388 12.3444 20.6388 11.5624V8.89444C20.6388 8.80244 20.6848 8.75644 20.7768 8.75644H23.4448C24.1808 8.75644 24.6178 8.29644 24.6178 7.65244C24.6178 7.00844 24.1808 6.54844 23.4448 6.54844H20.7768C20.6848 6.54844 20.6388 6.50244 20.6388 6.41044V3.74244C20.6388 2.96044 20.1558 2.52344 19.4888 2.52344C18.8448 2.52344 18.3618 2.96044 18.3618 3.74244V6.41044C18.3618 6.50244 18.3158 6.54844 18.2238 6.54844H15.5558C14.8198 6.54844 14.3828 7.00844 14.3828 7.65244C14.3828 8.29644 14.8198 8.75644 15.5558 8.75644H18.2238C18.3158 8.75644 18.3618 8.80244 18.3618 8.89444V11.5624Z" fill="${selectedTheme.followButton?.text || '#ffffff'}"/>
+        <circle cx="6" cy="4.5" r="4" fill="${selectedTheme.followButton?.text || '#ffffff'}"/>
+        <path d="M0 14.6667C0 12.3655 1.86548 10.5 4.16667 10.5H7.83333C10.1345 10.5 12 12.3655 12 14.6667C12 15.1269 11.6269 15.5 11.1667 15.5H0.833333C0.373096 15.5 0 15.1269 0 14.6667Z" fill="${selectedTheme.followButton?.text || '#ffffff'}"/>
+      </g>
+      <text x="${width - 60}" y="34" text-anchor="middle" fill="${selectedTheme.followButton?.text || '#ffffff'}" font-size="14px" font-weight="600" letter-spacing="0.5">FOLLOW</text>
+    </a>` : ''}
 
     <g transform="translate(${padding}, ${titleY + 55})">
       ${showXP ? `<g transform="translate(0, 0)">

@@ -11,6 +11,7 @@ async function handler(req, res) {
         const theme = (q.theme || 'default').toString();
         const format = (q.format || '').toString().toLowerCase();
         const cacheSeconds = parseInt((q.cache_seconds || process.env.CACHE_SECONDS || '1800').toString(), 10);
+        const followBtn = (q.follow_btn || '').toString().toLowerCase() === 'true';
         if (!username) {
             res.status(400).send('Missing "username" query parameter. Example: /api/lingo?username=your_duo_username');
             return;
@@ -26,10 +27,12 @@ async function handler(req, res) {
         // Otherwise, render and return SVG
         const svg = await (0, svg_1.renderDuolingoCard)(profile, {
             theme: theme,
-            convertToDataUrl: true // Enable data URL conversion for avatars
+            convertToDataUrl: false, // Disabled to prevent timeouts
+            followBtn: followBtn
         });
         res.setHeader('Content-Type', 'image/svg+xml; charset=utf-8');
         res.setHeader('Cache-Control', `public, max-age=${Math.max(0, cacheSeconds)}`);
+        return res.status(200).send(svg);
     }
     catch (err) {
         console.error('API error', err);
