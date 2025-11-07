@@ -1,0 +1,49 @@
+{
+    "niveles": [
+        {
+            "min": 0,
+            "max": 10,
+            "descripcion": "${name} puede usar frases simples para sus necesidades cotidianas en la vida real."
+        },
+        {
+            "min": 10,
+            "max": 20,
+            "descripcion": "${name} puede hacer y responder preguntas simples en la vida real."
+        },
+        {
+            "min": 20,
+            "max": 30,
+            "descripcion": "${name} puede conversar un poco, siempre que la otra persona sea paciente y quiera ayudar, en la vida real."
+        },
+        {
+            "min": 30,
+            "max": 60,
+            "descripcion": "${name} puede mantener conversaciones simples sobre temas del día a día en la vida real."
+        },
+        {
+            "min": 60,
+            "max": 80,
+            "descripcion": "${name} puede desenvolverse con confianza en la mayoría de las situaciones cuando viaja en la vida real."
+        },
+        {
+            "min": 80,
+            "max": 100,
+            "descripcion": "${name} puede manejar la mayoría de las situaciones del día a día y explicar sus ideas con confianza en la vida real."
+        },
+        {
+            "min": 100,
+            "max": 115,
+            "descripcion": "${name} puede debatir en mayor profundidad sobre temas que le interesan en la vida real."
+        },
+        {
+            "min": 115,
+            "max": 130,
+            "descripcion": "¡${name} puede expresarse con facilidad en la vida real! Puede usar el idioma para su trabajo, estudios y más."
+        },
+        {
+            "min": 130,
+            "max": 160,
+            "descripcion": "Significa que ${name} puede entender con facilidad todo lo que escucha y expresar pensamientos con varios matices en la vida real."
+        }
+    ]
+}

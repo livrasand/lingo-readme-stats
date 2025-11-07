@@ -26,6 +26,8 @@ The main endpoint is `/api/lingo` with these parameters:
 - `cache_seconds` (optional): Cache-Control header seconds. Default: 1800
 - `format` (optional): Set to `json` to get raw JSON data instead of SVG
 - `follow_btn` (optional): Set to `true` to show a follow button linking to the user's Duolingo profile
+- `show_description` (optional): Set to `true` to display a description of the user's current language level based on their XP
+- `name` (optional): Custom name to use in the description (defaults to the user's Duolingo name)
 
 ## Examples
 
@@ -62,6 +64,16 @@ Add a follow button to the card by including `follow_btn=true`:
 ```
 
 ![Follow Button Example](https://lingo-readme-stats.vercel.app/api/lingo?username=christi3&follow_btn=true)
+
+### With Level Description
+
+Show a description of the user's current language level based on their XP. You can also customize the name used in the description:
+
+```markdown
+![Duolingo Stats](https://lingo-readme-stats.vercel.app/api/lingo?username=your_username&show_description=true&name=Your%20Name)
+```
+
+![Description Example](https://lingo-readme-stats.vercel.app/api/lingo?username=christi3&show_description=true)
 
 ### JSON Response
 

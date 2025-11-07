@@ -1,8 +1,12 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.renderDuolingoCard = renderDuolingoCard;
 const themes_1 = require("./themes");
 const duolingo_1 = require("./duolingo");
+const levels_json_1 = __importDefault(require("./levels.json"));
 function escapeXml(unsafe) {
     return unsafe.replace(/[<>&'"]/g, function (c) {
         switch (c) {
@@ -31,7 +35,24 @@ async function fetchImageAsDataUrl(url) {
     }
 }
 async function renderDuolingoCard(profile, opts = {}) {
-    const selectedTheme = themes_1.themes[opts.theme || 'default'] || themes_1.themes.default;
+    // Get level description based on XP
+    const getLevelDescription = (xp, name) => {
+        // Find the appropriate level, or use the last one if XP exceeds all ranges
+        let level = levels_json_1.default.niveles.find((l) => xp >= l.min && xp < l.max);
+        // If no level found (XP is higher than max), use the last level
+        if (!level && levels_json_1.default.niveles.length > 0) {
+            const lastLevel = levels_json_1.default.niveles[levels_json_1.default.niveles.length - 1];
+            if (xp >= lastLevel.min) {
+                level = lastLevel;
+            }
+        }
+        return level ? level.descripcion.replace('${name}', name) : '';
+    };
+    const baseTheme = themes_1.themes[opts.theme || 'default'] || themes_1.themes.default;
+    const selectedTheme = {
+        ...baseTheme,
+        description: getLevelDescription(profile.totalXp ?? 0, opts.name || profile.name || profile.username || 'Unknown')
+    };
     const hide = new Set((opts.hide || []).map(h => h.toLowerCase()));
     const showFollowBtn = opts.followBtn === true;
     const name = escapeXml(profile.name ?? profile.username ?? 'Unknown');
@@ -41,7 +62,7 @@ async function renderDuolingoCard(profile, opts = {}) {
     const streak = profile.streak ?? 0;
     // Some simple layout & sizing
     const width = 520;
-    const height = 160;
+    const height = opts.showDescription ? 200 : 160;
     const padding = 20;
     const titleY = 42;
     // optional fields visibility
@@ -119,6 +140,19 @@ async function renderDuolingoCard(profile, opts = {}) {
 <text x="28" y="22" style="font-size:14px;" class="accent">${streak}</text>
 </g>` : ''}
     </g>
+    ${opts.showDescription ? `
+    <g transform="translate(${padding}, ${titleY + 110})">
+      <foreignObject width="${width - padding * 2}" height="100">
+        <div xmlns="http://www.w3.org/1999/xhtml" style="color: #3c3c3c; font-size: 12px; font-weight: 500; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; white-space: normal; word-wrap: break-word;">
+          ${(() => {
+        const userLevel = (0, duolingo_1.translateXpToLevels)(xp);
+        const levelInfo = levels_json_1.default.niveles.find(level => userLevel >= level.min && userLevel < level.max) || levels_json_1.default.niveles[levels_json_1.default.niveles.length - 1];
+        const description = levelInfo.descripcion.replace('${name}', name);
+        return description;
+    })()}
+        </div>
+      </foreignObject>
+    </g>` : ''}
   </g>
 </svg>`;
     return svg;

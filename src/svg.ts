@@ -1,12 +1,15 @@
 import { DuolingoProfile } from './types';
 import { themes, Theme, ThemeKey } from './themes';
 import { translateXpToLevels } from './duolingo';
+import levelsData from './levels.json';
 
 type RenderOptions = {
   theme?: ThemeKey;
   hide?: string[];
   convertToDataUrl?: boolean;
   followBtn?: boolean;
+  showDescription?: boolean;
+  name?: string;
 };
 
 function escapeXml(unsafe: string) {
@@ -38,7 +41,27 @@ async function fetchImageAsDataUrl(url: string): Promise<string | null> {
 }
 
 export async function renderDuolingoCard(profile: DuolingoProfile, opts: RenderOptions = {}) {
-  const selectedTheme = themes[opts.theme || 'default'] || themes.default;
+  // Get level description based on XP
+  const getLevelDescription = (xp: number, name: string) => {
+    // Find the appropriate level, or use the last one if XP exceeds all ranges
+    let level = levelsData.niveles.find((l: any) => xp >= l.min && xp < l.max);
+    
+    // If no level found (XP is higher than max), use the last level
+    if (!level && levelsData.niveles.length > 0) {
+      const lastLevel = levelsData.niveles[levelsData.niveles.length - 1];
+      if (xp >= lastLevel.min) {
+        level = lastLevel;
+      }
+    }
+    
+    return level ? level.descripcion.replace('${name}', name) : '';
+  };
+
+  const baseTheme = themes[opts.theme || 'default'] || themes.default;
+  const selectedTheme = {
+    ...baseTheme,
+    description: getLevelDescription(profile.totalXp ?? 0, opts.name || profile.name || profile.username || 'Unknown')
+  };
   const hide = new Set((opts.hide || []).map(h => h.toLowerCase()));
   const showFollowBtn = opts.followBtn === true;
 
@@ -50,7 +73,7 @@ export async function renderDuolingoCard(profile: DuolingoProfile, opts: RenderO
 
   // Some simple layout & sizing
   const width = 520;
-  const height = 160;
+  const height = opts.showDescription ? 200 : 160;
   const padding = 20;
   const titleY = 42;
 
@@ -131,6 +154,21 @@ export async function renderDuolingoCard(profile: DuolingoProfile, opts: RenderO
 <text x="28" y="22" style="font-size:14px;" class="accent">${streak}</text>
 </g>` : ''}
     </g>
+    ${opts.showDescription ? `
+    <g transform="translate(${padding}, ${titleY + 110})">
+      <foreignObject width="${width - padding * 2}" height="100">
+        <div xmlns="http://www.w3.org/1999/xhtml" style="color: #3c3c3c; font-size: 12px; font-weight: 500; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; white-space: normal; word-wrap: break-word;">
+          ${(() => {
+            const userLevel = translateXpToLevels(xp);
+            const levelInfo = levelsData.niveles.find(
+              level => userLevel >= level.min && userLevel < level.max
+            ) || levelsData.niveles[levelsData.niveles.length - 1];
+            const description = levelInfo.descripcion.replace('${name}', name);
+            return description;
+          })()}
+        </div>
+      </foreignObject>
+    </g>` : ''}
   </g>
 </svg>`;
 

@@ -13,6 +13,8 @@ export default async function handler(req: any, res: any) {
     const format = (q.format || '').toString().toLowerCase();
     const cacheSeconds = parseInt((q.cache_seconds || process.env.CACHE_SECONDS || '1800').toString(), 10);
     const followBtn = (q.follow_btn || '').toString().toLowerCase() === 'true';
+    const showDescription = (q.show_description || '').toString().toLowerCase() === 'true';
+    const name = q.name ? q.name.toString() : undefined;
 
     if (!username) {
       res.status(400).send('Missing "username" query parameter. Example: /api/lingo?username=your_duo_username');
@@ -33,7 +35,9 @@ export default async function handler(req: any, res: any) {
     const svg = await renderDuolingoCard(profile, {
       theme: theme as keyof Themes,
       convertToDataUrl: false, // Disabled to prevent timeouts
-      followBtn: followBtn
+      followBtn: followBtn,
+      showDescription: showDescription,
+      name: name
     });
 
     res.setHeader('Content-Type', 'image/svg+xml; charset=utf-8');
